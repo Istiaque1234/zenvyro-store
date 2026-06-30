@@ -1,16 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zenvyro Official Store</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header>
-        <div class="container">
-            <h1>Zenvyro Official Store</h1>
-            <nav>
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a
+<script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth-compat.js"></script>
+
+<script>
+  // 1. You copy and paste these exact keys from your Firebase Dashboard
+  const firebaseConfig = {
+    apiKey: "YOUR_UNIQUE_API_KEY",
+    authDomain: "your-store.firebaseapp.com",
+    projectId: "your-store",
+    storageBucket: "your-store.appspot.com",
+    messagingSenderId: "123456789",
+    appId: "1:123456:web:abc123xyz"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  // 2. The secure function that handles the login
+  function handleLogin(e) {
+    e.preventDefault();
+    const email = document.getElementById('username').value;
+    const pass = document.getElementById('password').value;
+
+    // This safely sends the data to Google's secure servers to check
+    firebase.auth().signInWithEmailAndPassword(email, pass)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        
+        // Check if the logged-in user is your admin email
+        if (user.email === "admin@mystore.com") {
+            alert("Welcome back, Boss!");
+            showPage('admin'); // Opens your secret control panel
+        } else {
+            alert("Welcome back, Customer!");
+            showPage('home'); // Redirects to shopping page
+        }
+      })
+      .catch((error) => {
+        // If the password or email doesn't match what's in your dashboard
+        alert("Error: " + error.message);
+      });
+  }
+</script>
